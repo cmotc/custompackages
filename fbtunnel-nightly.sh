@@ -4,7 +4,7 @@ REVISION="-1"
 VERSION=$SOURCEVERSION$REVISION
 FBTUNVERSION='facebook-tunnel'
 under='_'
-YOU="dmotc"
+YOU="Dan Koksal"
 EMAIL="cmotc@openmailbox.org"
 echo "$FBTUNVERSION debian package generation tool"
 echo $FBTUNVERSION$under$VERSION
@@ -47,25 +47,21 @@ Description: Facebook-Tunnel package for Debian(CONTRIB AT BEST, ENCOURAGES THE 
 echo "#!/usr/bin/make -f
 %:
 	dh \$@">$FBTUNVERSION$under$VERSION/debian/rules
-#./fbtundebconfig.sh
+./fbtundebconfig.sh
 echo '3.0 (quilt)' > $FBTUNVERSION$under$VERSION/debian/source/format
 cd $FBTUNVERSION$under$VERSION/ 
 rm debian/changelog
 dch --create -v $VERSION --package $FBTUNVERSION
 ./bootstrap.sh
-#./configure #--enable-av
 dpkg-source --commit
 debuild -d -us -uc 
 pwd
 cd ..
 rm -rf toxcore-debhelper/$FBTUNVERSION
-cp $FBTUNVERSION$under$VERSION toxcore-debhelper/$FBTUNVERSION
+mv $FBTUNVERSION$under$VERSION toxcore-debhelper/$FBTUNVERSION
 rm -rf toxcore-debhelper/$FBTUNVERSION/debian
-cp $FBTUNVERSION*$under$VERSION* toxcore-debhelper/
-cp $FBTUNVERSION$under$VERSION* toxcore-debhelper/
-dpkg-sig -k FFECC302 --sign builder $FBTUNVERSION$under$VERSION*.deb
-dpkg-sig -k FFECC302 --sign builder $FBTUNVERSION*$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $FBTUNVERSION$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $FBTUNVERSION*$under$VERSION*.deb
+mv $FBTUNVERSION*$under$VERSION* toxcore-debhelper/
+mv $FBTUNVERSION$under$VERSION* toxcore-debhelper/
 cp fbtunnel-nightly.sh toxcore-debhelper/
-cd toxcore-debhelper && gpsf
-cd .. 
-./updaterepo

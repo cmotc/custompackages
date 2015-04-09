@@ -59,13 +59,9 @@ debuild -d -us -uc
 pwd
 cd ..
 rm -rf toxcore-debhelper/$TOXVERSION
+dpkg-sig -k C62339BC --sign builder lib$TOXVERSION$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder lib$TOXVERSION*$under$VERSION*.deb
 mv $TOXVERSION$under$VERSION toxcore-debhelper/$TOXVERSION
-rm -rf toxcore-debhelper/$TOXVERSION/debian
-mv lib$TOXVERSION*$under$VERSION* toxcore-debhelper/
+mv $TOXVERSION*$under$VERSION* toxcore-debhelper/
 mv $TOXVERSION$under$VERSION* toxcore-debhelper/
-dpkg-sig --sign builder lib$TOXVERSION$under$VERSION*.deb
-dpkg-sig --sign builder lib$TOXVERSION*$under$VERSION*.deb
 cp libtoxcore-nightly.sh toxcore-debhelper/
-cd toxcore-debhelper && gpsf
-cd .. 
-./updaterepo

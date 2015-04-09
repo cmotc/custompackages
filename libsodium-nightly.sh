@@ -60,13 +60,11 @@ dpkg-source --commit
 debuild -us -uc 
 cd ..
 rm -rf toxcore-debhelper/$SODIUM
-mv $SODIUM$under$VERSION toxcore-debhelper/$SODIUM
-rm -rf toxcore-debhelper/$SODIUM/debian
+dpkg-sig -k C62339BC --sign builder lib$SODIUM$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder lib$SODIUM*$under$VERSION*.deb
+mv $SODIUM$under$VERSION* toxcore-debhelper/$SODIUM
 mv lib$SODIUM$under$VERSION* toxcore-debhelper/
 mv lib$SODIUM*$under$VERSION* toxcore-debhelper/
-mv $SODIUM$under$VERSION* toxcore-debhelper/
-dpkg-sig --sign builder lib$SODIUM$under$VERSION*.deb
-dpkg-sig --sign builder lib$SODIUM*$under$VERSION*.deb
 mv *.orig.tar.gz toxcore-debhelper/
 cp libsodium-nightly.sh toxcore-debhelper/
 cd toxcore-debhelper && ./gpsf

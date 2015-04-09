@@ -54,13 +54,9 @@ debuild -us -uc
 pwd
 cd ..
 rm -rf toxcore-debhelper/$PGKVERSION
+dpkg-sig -k C62339BC --sign builder $PGKVERSION$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $PGKVERSION*$under$VERSION*.deb
 mv $PGKVERSION$under$VERSION toxcore-debhelper/$PGKVERSION
-rm -rf toxcore-debhelper/$PGKVERSION/debian
 mv lib$PGKVERSION*$under$VERSION* toxcore-debhelper/
 mv $PGKVERSION$under$VERSION* toxcore-debhelper/
-dpkg-sig --sign builder $PGKVERSION$under$VERSION*.deb
-dpkg-sig --sign builder $PGKVERSION*$under$VERSION*.deb
 cp pidgingnomekeyring-nightly.sh toxcore-debhelper/
-cd toxcore-debhelper && gpsf
-cd .. 
-./updaterepo

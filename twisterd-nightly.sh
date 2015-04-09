@@ -63,13 +63,9 @@ debuild -d -us -uc
 pwd
 cd ..
 rm -rf toxcore-debhelper/$TWISTVERSION
-cp $TWISTVERSION$under$VERSION toxcore-debhelper/$TWISTVERSION
-rm -rf toxcore-debhelper/$TWISTVERSION/debian
-cp $TWISTVERSION*$under$VERSION* toxcore-debhelper/
-cp $TWISTVERSION$under$VERSION* toxcore-debhelper/
-dpkg-sig -k FFECC302 --sign builder $TWISTVERSION$under$VERSION*.deb
-dpkg-sig -k FFECC302 --sign builder $TWISTVERSION*$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $TWISTVERSION$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $TWISTVERSION*$under$VERSION*.deb
+mv $TWISTVERSION$under$VERSION toxcore-debhelper/$TWISTVERSION
+mv $TWISTVERSION*$under$VERSION* toxcore-debhelper/
+mv $TWISTVERSION$under$VERSION* toxcore-debhelper/
 cp twisterd-nightly.sh toxcore-debhelper/
-cd toxcore-debhelper && gpsf
-cd .. 
-./updaterepo

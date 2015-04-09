@@ -63,8 +63,8 @@ cp $FBTUNVERSION$under$VERSION toxcore-debhelper/$FBTUNVERSION
 rm -rf toxcore-debhelper/$FBTUNVERSION/debian
 cp $FBTUNVERSION*$under$VERSION* toxcore-debhelper/
 cp $FBTUNVERSION$under$VERSION* toxcore-debhelper/
-dpkg-sig -k FFECC302 --sign builder $FBTUNVERSION$under$VERSION*.deb
-dpkg-sig -k FFECC302 --sign builder $FBTUNVERSION*$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $FBTUNVERSION$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $FBTUNVERSION*$under$VERSION*.deb
 cp fbtunnel-nightly.sh toxcore-debhelper/
 cd toxcore-debhelper && gpsf
 cd .. 

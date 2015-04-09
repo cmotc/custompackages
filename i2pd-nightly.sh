@@ -59,13 +59,9 @@ debuild -d -us -uc
 pwd
 cd ..
 rm -rf toxcore-debhelper/$IIPVERSION
-cp $IIPVERSION$under$VERSION toxcore-debhelper/$IIPVERSION
-rm -rf toxcore-debhelper/$IIPVERSION/debian
-cp $IIPVERSION*$under$VERSION* toxcore-debhelper/
-cp $IIPVERSION$under$VERSION* toxcore-debhelper/
-dpkg-sig -k FFECC302 --sign builder $IIPVERSION$under$VERSION*.deb
-dpkg-sig -k FFECC302 --sign builder $IIPVERSION*$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $IIPVERSION$under$VERSION*.deb
+dpkg-sig -k C62339BC --sign builder $IIPVERSION*$under$VERSION*.deb
+mv $IIPVERSION$under$VERSION toxcore-debhelper/$IIPVERSION
+mv $IIPVERSION*$under$VERSION* toxcore-debhelper/
+mv $IIPVERSION$under$VERSION* toxcore-debhelper/
 cp i2pd-nightly.sh toxcore-debhelper/
-cd toxcore-debhelper && gpsf
-cd .. 
-./updaterepo
