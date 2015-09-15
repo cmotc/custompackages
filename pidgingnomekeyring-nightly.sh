@@ -4,7 +4,7 @@ REVISION="-1"
 VERSION=$SOURCEVERSION$REVISION
 PGKVERSION='pidgin-gnome-keyring'
 under='_'
-YOU="dmotc"
+YOU="cmotc"
 EMAIL="cmotc@openmailbox.org"
 echo "$PGKVERSION debian package generation tool"
 echo $PGKVERSION$under$VERSION
@@ -48,15 +48,19 @@ cd $PGKVERSION$under$VERSION/
 rm debian/changelog
 dch --create -v $VERSION --package $PGKVERSION
 autoreconf -i
-#./configure
+./configure
 dpkg-source --commit
 debuild -us -uc 
 pwd
 cd ..
 rm -rf toxcore-debhelper/$PGKVERSION
-dpkg-sig -k C62339BC --sign builder $PGKVERSION$under$VERSION*.deb
-dpkg-sig -k C62339BC --sign builder $PGKVERSION*$under$VERSION*.deb
 mv $PGKVERSION$under$VERSION toxcore-debhelper/$PGKVERSION
+rm -rf toxcore-debhelper/$PGKVERSION/debian
 mv lib$PGKVERSION*$under$VERSION* toxcore-debhelper/
 mv $PGKVERSION$under$VERSION* toxcore-debhelper/
+dpkg-sig --sign builder $PGKVERSION$under$VERSION*.deb
+dpkg-sig --sign builder $PGKVERSION*$under$VERSION*.deb
 cp pidgingnomekeyring-nightly.sh toxcore-debhelper/
+cd toxcore-debhelper && gpsf
+cd .. 
+./updaterepo
