@@ -2,20 +2,37 @@
 
 REPO_ARRAY=0
 
+CONFIG_FILE="#!/bin/sh
+CONFIG_DIR=\$HOME/.config/conkyswitcher
+"
+if [ -f "$HOME/.config/conkyswitcher/rcconfig" ]; then
+	. $HOME/.config/conkyswitcher/rcconfig
+else
+	if [ -d "$HOME/.config/conkyswitcher" ]; then
+		echo $CONFIG_FILE > $HOME/.config/conkyswitcher/rcconfig
+		. $HOME/.config/conkyswitcher/rcconfig
+	else
+		mkdir -p "$HOME/.config/conkyswitcher"
+		echo $CONFIG_FILE > $HOME/.config/conkyswitcher/rcconfig
+		. $HOME/.config/conkyswitcher/rcconfig
+	fi
+fi
+
+
 rm -rf packages/*
 
 cslistcompute(){
-	cat ./conkyrc.list ./conkyrc.list.d/*.list > ./.generated_list
+	cat $CONFIG_DIR/conkyrc.list $CONFIG_DIR/conkyrc.list.d/*.list > $CONFIG_DIR/.generated_list
 	unset REPO_ARRAY
 	while read line; do
 		REPO_ARRAY+=($line)
 	done < .generated_list
-	rm ./.generated_list
+	rm $CONFIG_DIR/.generated_list
 	printf '%s\n' "${REPO_ARRAY[@]}"
 }
 
 cspullpkgs(){
-	cd ./packages/
+	cd $CONFIG_DIR/packages/
 	for i in "${REPO_ARRAY[@]}"; do
 		wget $i 
 	done
@@ -36,7 +53,7 @@ cscheckexists(){
 }
 
 csunzippkgs(){
-	cd ./packages/
+	cd $CONFIG_DIR/packages/
 	CS_ZIP_EXT="*.gz"
 	if [[ $(cscheckexists; echo $?) -eq 1 ]]; then
 		for i in *.gz; do
@@ -70,7 +87,7 @@ csupdate(){
 
 csswitch(){
 	echo " Switching to $1"
-	CS_WD=$(pwd)
+	CS_WD=$CONFIG_DIR
 	SWITCH_TO="$CS_WD/packages/$1"
 	CONKY_FILE=$HOME/.conkyrc
 	rm $CONKY_FILE
@@ -82,12 +99,19 @@ csswitch(){
 }
 
 csinfo(){
-	ls ./packages/
+	ls $CONFIG_DIR/packages/
 }
 
 csprint(){
-	CS_WD=$(pwd)
+	CS_WD=$CONFIG_DIR
 	SWITCH_TO="$CS_WD/packages/$1"
 	cat $SWITCH_TO
 }
 
+csinstall(){
+	sudo cp conkyswitcher.sh /usr/bin/conkyswitcher
+	sudo chmod a+x /usr/bin/conkyswitcher
+	echo "
+		. /usr/bin/conkyswitcher
+	" >> $HOME/.profile
+}
