@@ -5,16 +5,33 @@ REPO_ARRAY=0
 CONFIG_FILE="#!/bin/sh
 CONFIG_DIR=\$HOME/.config/conkyswitcher
 "
-if [ -f "$HOME/.config/conkyswitcher/rcconfig" ]; then
-	. $HOME/.config/conkyswitcher/rcconfig
-else
-	if [ -d "$HOME/.config/conkyswitcher" ]; then
-		echo $CONFIG_FILE > $HOME/.config/conkyswitcher/rcconfig
+if [ -f "/usr/bin/conkyswitcher" ]; then
+	if [ -f "$HOME/.config/conkyswitcher/rcconfig" ]; then
 		. $HOME/.config/conkyswitcher/rcconfig
 	else
-		mkdir -p "$HOME/.config/conkyswitcher"
-		echo $CONFIG_FILE > $HOME/.config/conkyswitcher/rcconfig
+		if [ -d "$HOME/.config/conkyswitcher" ]; then
+			echo $CONFIG_FILE > $HOME/.config/conkyswitcher/rcconfig
+			. $HOME/.config/conkyswitcher/rcconfig
+		else
+			mkdir -p "$HOME/.config/conkyswitcher"
+			echo $CONFIG_FILE > $HOME/.config/conkyswitcher/rcconfig
+			. $HOME/.config/conkyswitcher/rcconfig
+		fi
+	fi
+else
+	if [ -f "$HOME/.config/conkyswitcher/rcconfig" ]; then
 		. $HOME/.config/conkyswitcher/rcconfig
+	else
+		if [ -d "$HOME/.config/conkyswitcher" ]; then
+			echo $CONFIG_FILE > $HOME/.config/conkyswitcher/rcconfig
+			. $HOME/.config/conkyswitcher/rcconfig
+			csinstall
+		else
+			mkdir -p "$HOME/.config/conkyswitcher"
+			echo $CONFIG_FILE > $HOME/.config/conkyswitcher/rcconfig
+			. $HOME/.config/conkyswitcher/rcconfig
+			csinstall
+		fi
 	fi
 fi
 
